@@ -72,3 +72,13 @@
     width: 26px;
     margin-top: 10px;
 }
+
+/* in File Loader.jsx */
+.loader-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    width: 100%;
+    height: 100%;
+}

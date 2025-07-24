@@ -8,8 +8,12 @@ import humidity_icon from "../assets/humidity.png"
 import rain_icon from "../assets/rain.png"
 import snow_icon from "../assets/snow.png"
 import wind_icon from "../assets/wind.png"
+import Loader from './Loader.jsx'
 
 const Weather = () => {
+
+    const [weatherData, setWeatherData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const all_icons = {
         "01d": clear_icon,
@@ -30,11 +34,10 @@ const Weather = () => {
 
     const inputRef = useRef();
 
-    const [weatherData, setWeatherData] = useState(false);
-
     const search = async (city) => {
-        
+
         try {
+            setLoading(true); //start loader
             const apiKey = import.meta.env.VITE_APP_ID;
             console.log(apiKey);
 
@@ -57,7 +60,10 @@ const Weather = () => {
             })
 
         } catch (error) {
-            console.log(error.message)
+            console.log("Failed to fetch weather: ", error.message)
+        }
+        finally {
+            setLoading(false); //stop loader
         }
     }
 
@@ -65,6 +71,13 @@ const Weather = () => {
         search("London");
     }, []);
 
+    if (loading || !weatherData) {
+        return (
+            <div className=' p-10 text-white flex justify-center items-center h-screen'>
+                <Loader />
+            </div>
+        )
+    }
 
     return (
         <div className='weather p-10 text-white'>
@@ -74,9 +87,15 @@ const Weather = () => {
                     className='bg-white'
                     type="text"
                     placeholder='Search'
-                    onClick={() => search(inputRef.current.value)}
                 />
-                <img src={search_icon} alt="" />
+                <img
+                    src={search_icon}
+                    alt=""
+                    onClick={()=>{
+                        const city = inputRef.current.value.trim();
+                        if (city) search(city)
+                    }}
+                />
             </div>
             <img src={weatherData.icon} alt="" className='weather-icon' />
             <p className='temperature'>{weatherData.temperature}°c</p>
