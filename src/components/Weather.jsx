@@ -15,6 +15,7 @@ const Weather = () => {
 
     const [weatherData, setWeatherData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const inputRef = useRef();
 
     const all_icons = {
         "01d": clear_icon,
@@ -32,8 +33,6 @@ const Weather = () => {
         "50d": cloud_icon,
         "50n": cloud_icon
     };
-
-    const inputRef = useRef();
 
     const search = async (city) => {
 
