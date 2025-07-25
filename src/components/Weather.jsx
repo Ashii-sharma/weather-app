@@ -72,6 +72,7 @@ const Weather = () => {
             })
 
         } catch (error) {
+            setWeatherData(false);
             console.log("Failed to fetch weather: ", error.message)
         }
         finally {
